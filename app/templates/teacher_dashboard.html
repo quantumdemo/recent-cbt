@@ -550,7 +550,7 @@
         <a href="{{ url_for('create_exam') }}" class="action-btn action-btn-primary">
             📝 Create New Exam
         </a>
-        <a href="{{ url_for('teacher_analytics') }}" class="action-btn">
+        <a href="{{ url_for('teacher_analytics', exam_id=None) }}" class="action-btn">
             📊 View All Analytics
         </a>
         <a href="{{ url_for('manage_users') }}" class="action-btn">
