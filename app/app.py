@@ -240,8 +240,8 @@ def create_exam():
         exam_class = request.form['class']
         duration = request.form['duration']
         description = request.form['description']
-        start_time = request.form['start_time']
-        end_time = request.form['end_time']
+        start_time = request.form.get('start_time') or None
+        end_time = request.form.get('end_time') or None
         randomize_questions = 'randomize_questions' in request.form
         delay_results = 'delay_results' in request.form
 
