@@ -596,8 +596,7 @@
                             <div class="actions">
                                 <a href="{{ url_for('manage_exam', exam_id=exam.id) }}">Manage</a>
                                 <a href="{{ url_for('teacher_analytics', exam_id=exam.id) }}">Analytics</a>
-                                <a href="{{ url_for('delete_exam', exam_id=exam.id) }}" 
-                                   onclick="return confirm('Are you sure you want to delete \"{{ exam.title }}\"? This action cannot be undone.');">
+                                <a href="{{ url_for('delete_exam', exam_id=exam.id) }}">
                                     Delete
                                 </a>
                             </div>
