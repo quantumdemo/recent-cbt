@@ -1,0 +1,16 @@
+Flask>=2.0
+psycopg2-binary
+python-dotenv
+werkzeug
+flask-login
+Flask-Mail
+pandas
+openpyxl
+fpdf
+XlsxWriter
+requests
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+cachecontrol
