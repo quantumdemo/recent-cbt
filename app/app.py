@@ -541,22 +541,33 @@ def view_results(submission_id):
     conn.close()
     return render_template('view_results.html', exam=exam, submission=submission, results=results)
 
+@app.route('/teacher/analytics/', defaults={'exam_id': None})
 @app.route('/teacher/analytics/<int:exam_id>')
 @login_required
 def teacher_analytics(exam_id):
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    cur.execute("SELECT * FROM exams WHERE id = %s AND teacher_id = %s", (exam_id, current_user.id))
-    exam = cur.fetchone()
-
-    cur.execute("""
-        SELECT u.fullname, s.score
-        FROM exam_submissions s
-        JOIN users u ON s.student_id = u.id
-        WHERE s.exam_id = %s AND s.status = 'submitted'
-    """, (exam_id,))
-    submissions = cur.fetchall()
+    if exam_id:
+        cur.execute("SELECT * FROM exams WHERE id = %s AND teacher_id = %s", (exam_id, current_user.id))
+        exam = cur.fetchone()
+        cur.execute("""
+            SELECT u.fullname, s.score
+            FROM exam_submissions s
+            JOIN users u ON s.student_id = u.id
+            WHERE s.exam_id = %s AND s.status = 'submitted'
+        """, (exam_id,))
+        submissions = cur.fetchall()
+    else:
+        exam = None
+        cur.execute("""
+            SELECT u.fullname, s.score
+            FROM exam_submissions s
+            JOIN users u ON s.student_id = u.id
+            JOIN exams e ON s.exam_id = e.id
+            WHERE e.teacher_id = %s AND s.status = 'submitted'
+        """, (current_user.id,))
+        submissions = cur.fetchall()
 
     average_score = sum([s['score'] for s in submissions]) / len(submissions) if submissions else 0
 
