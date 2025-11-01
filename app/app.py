@@ -722,7 +722,7 @@ def student_dashboard():
     cur.execute("""
         SELECT e.* FROM exams e
         LEFT JOIN exam_submissions s ON e.id = s.exam_id AND s.student_id = %s
-        WHERE s.id IS NULL AND e.start_time <= %s AND e.end_time >= %s
+        WHERE s.id IS NULL AND ((e.start_time <= %s AND e.end_time >= %s) OR e.start_time IS NULL)
     """, (current_user.id, now, now))
     available_exams = cur.fetchall()
 
