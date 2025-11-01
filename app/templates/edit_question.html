@@ -357,19 +357,12 @@
             transform: scale(1.1);
         }
     </style>
-    <script src="https://cdn.tiny.cloud/1/drpbgj7otrspg8zomtx5o1ok53vxfa58mkykgctsl17rzx7n/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-      tinymce.init({
-        selector: '#question_text',
-        plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-        toolbar_mode: 'floating',
-        skin: 'oxide',
-        content_css: 'default',
-        height: 300,
-        menubar: false,
-        statusbar: false,
-        branding: false
-      });
+          ClassicEditor
+              .create( document.querySelector( '#question_text' ) )
+              .catch( error => {
+                  console.error( error );
+              } );
 
       // Add visual feedback for correct options
       document.addEventListener('DOMContentLoaded', function() {
