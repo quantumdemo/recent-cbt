@@ -712,6 +712,17 @@ def student_register():
 
     return render_template('student_register.html')
 
+@app.route('/student/exam/<int:exam_id>/instructions')
+@login_required
+def exam_instructions(exam_id):
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute("SELECT * FROM exams WHERE id = %s", (exam_id,))
+    exam = cur.fetchone()
+    cur.close()
+    conn.close()
+    return render_template('exam_instructions.html', exam=exam)
+
 @app.route('/student/dashboard')
 @login_required
 def student_dashboard():

@@ -1,0 +1,17 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">{{ exam.title }}</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Instructions:</strong></p>
+            <p>{{ exam.description }}</p>
+            <hr>
+            <a href="{{ url_for('start_exam', exam_id=exam.id) }}" class="btn btn-primary">Start Exam</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

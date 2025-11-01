@@ -470,9 +470,8 @@
                         <span class="exam-status status-available">Available</span>
                     </td>
                     <td>
-                        <a href="{{ url_for('start_exam', exam_id=exam.id) }}" class="btn" 
-                           onclick="return confirm('Are you ready to start this exam? You will have {{ exam.duration }} minutes to complete it.')">
-                            Start Exam
+                        <a href="{{ url_for('exam_instructions', exam_id=exam.id) }}" class="btn">
+                            View Instructions
                         </a>
                     </td>
                 </tr>
