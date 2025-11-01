@@ -583,14 +583,18 @@
 
         async function submitExam() {
             if (confirm('Are you sure you want to submit the exam? You cannot return to the exam after submission.')) {
-                const response = await fetch(`/student/exam/submit`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ submission_id: submissionId })
-                });
-                if (response.ok) {
-                    window.location.href = "{{ url_for('student_dashboard') }}";
-                }
+                forceSubmitExam();
+            }
+        }
+
+        async function forceSubmitExam() {
+            const response = await fetch(`/student/exam/submit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ submission_id: submissionId })
+            });
+            if (response.ok) {
+                window.location.href = "{{ url_for('student_dashboard') }}";
             }
         }
 
@@ -642,7 +646,7 @@
                     showWarning('Final Warning', 'This is your final warning. If you switch tabs again, the exam will be submitted automatically.');
                 } else if (tabSwitchCount >= 3) {
                     showWarning('Exam Submitted', 'You have switched tabs three times. The exam has been submitted.');
-                    setTimeout(submitExam, 2000);
+                    setTimeout(forceSubmitExam, 2000);
                 }
             }
         });
