@@ -519,10 +519,13 @@
     </div>
     <div class="stat-card">
         <div class="stat-number">
-            {% set active_exams = exams|selectattr('is_active', 'equalto', true)|list %}
-            {{ active_exams|length }}
+            {% if exams %}
+                {{ (exams|map(attribute='completion_rate')|sum / exams|length)|round(1) }}%
+            {% else %}
+                0%
+            {% endif %}
         </div>
-        <div class="stat-label">Active Exams</div>
+        <div class="stat-label">Avg Completion</div>
     </div>
     <div class="stat-card">
         <div class="stat-number">
@@ -533,13 +536,10 @@
     </div>
     <div class="stat-card">
         <div class="stat-number">
-            {% if exams %}
-                {{ (exams|map(attribute='completion_rate')|sum / exams|length)|round(1) }}%
-            {% else %}
-                0%
-            {% endif %}
+            {% set active_exams = exams|selectattr('is_active', 'equalto', true)|list %}
+            {{ active_exams|length }}
         </div>
-        <div class="stat-label">Avg Completion</div>
+        <div class="stat-label">Active Exams</div>
     </div>
 </div>
 

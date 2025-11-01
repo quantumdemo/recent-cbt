@@ -169,8 +169,41 @@ def teacher_dashboard():
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     # Fetch exams for the main list
-    cur.execute("SELECT id, title, class, duration FROM exams WHERE teacher_id = %s ORDER BY created_at DESC", (current_user.id,))
-    exams = cur.fetchall()
+    cur.execute("""
+        SELECT
+            e.id, e.title, e.class, e.duration, e.start_time, e.end_time,
+            COUNT(s.id) AS submission_count
+        FROM exams e
+        LEFT JOIN exam_submissions s ON e.id = s.exam_id
+        WHERE e.teacher_id = %s
+        GROUP BY e.id
+        ORDER BY e.created_at DESC
+    """, (current_user.id,))
+    exams_data = cur.fetchall()
+
+    now = datetime.utcnow()
+    exams = []
+    for exam_data in exams_data:
+        exam = dict(exam_data)
+        start_time = exam.get('start_time')
+        end_time = exam.get('end_time')
+        is_active = False
+        if start_time and end_time:
+            is_active = start_time <= now <= end_time
+        elif start_time:
+            is_active = start_time <= now
+        exam['is_active'] = is_active
+
+        # Calculate completion rate for each exam
+        cur.execute("SELECT COUNT(id) FROM users WHERE role = 'student' AND class = %s", (exam['class'],))
+        total_students_in_class = cur.fetchone()[0]
+
+        completion_rate = 0
+        if total_students_in_class > 0:
+            completion_rate = (exam['submission_count'] / total_students_in_class) * 100
+        exam['completion_rate'] = completion_rate
+
+        exams.append(exam)
 
     # --- DYNAMIC ACTIVITY FEED LOGIC ---
     activities = []
