@@ -487,23 +487,28 @@ def calculate_score(submission_id):
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
+    # Get exam_id from submission
+    cur.execute("SELECT exam_id FROM exam_submissions WHERE id = %s", (submission_id,))
+    exam_id = cur.fetchone()['exam_id']
+
+    # Get all objective questions for the exam
+    cur.execute("SELECT COUNT(*) FROM questions WHERE exam_id = %s AND question_type IN ('single-choice', 'multiple-choice')", (exam_id,))
+    total_objective_questions = cur.fetchone()[0]
+
+    # Get student's answers
     cur.execute("""
         SELECT sa.answer_text, q.question_type, q.correct_answer
         FROM student_answers sa
         JOIN questions q ON sa.question_id = q.id
         WHERE sa.submission_id = %s
     """, (submission_id,))
-
     answers = cur.fetchall()
-    score = 0
-    total_objective_questions = 0
 
+    score = 0
     for answer in answers:
         if answer['question_type'] in ['single-choice', 'multiple-choice']:
-            total_objective_questions += 1
             student_answer_indices = set(answer['answer_text'].split(','))
             correct_answer_indices = set(json.loads(answer['correct_answer']))
-
             if student_answer_indices == correct_answer_indices:
                 score += 1
 
