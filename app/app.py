@@ -53,7 +53,9 @@ login_manager.init_app(app)
 login_manager.login_view = 'student_login'
 
 def from_json(value):
-    return json.loads(value)
+    if isinstance(value, str):
+        return json.loads(value)
+    return value
 app.jinja_env.filters['fromjson'] = from_json
 
 @login_manager.user_loader
