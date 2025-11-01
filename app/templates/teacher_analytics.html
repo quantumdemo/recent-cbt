@@ -501,10 +501,12 @@
     <main>
         <div class="container">
             <!-- Action Bar -->
+            {% if exam %}
             <div class="action-bar">
                 <a href="{{ url_for('export_results', exam_id=exam.id, format='csv') }}" class="btn btn-csv">Export as CSV</a>
                 <a href="{{ url_for('export_results', exam_id=exam.id, format='pdf') }}" class="btn btn-pdf">Export as PDF</a>
             </div>
+            {% endif %}
 
             <!-- Statistics Overview -->
             <div class="stats-overview">

@@ -571,9 +571,19 @@ def teacher_analytics(exam_id):
 
     average_score = sum([s['score'] for s in submissions]) / len(submissions) if submissions else 0
 
+    # Calculate completion rate for all exams
+    cur.execute("SELECT COUNT(DISTINCT student_id) FROM exam_submissions WHERE exam_id IN (SELECT id FROM exams WHERE teacher_id = %s)", (current_user.id,))
+    total_students_with_submissions = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(DISTINCT id) FROM users WHERE role = 'student' AND class IN (SELECT DISTINCT class FROM exams WHERE teacher_id = %s)", (current_user.id,))
+    total_students_in_classes = cur.fetchone()[0]
+
+    completion_rate = (total_students_with_submissions / total_students_in_classes) * 100 if total_students_in_classes > 0 else 0
+
+
     cur.close()
     conn.close()
-    return render_template('teacher_analytics.html', exam=exam, submissions=submissions, average_score=average_score)
+    return render_template('teacher_analytics.html', exam=exam, submissions=submissions, average_score=average_score, completion_rate=completion_rate)
 
 @app.route('/teacher/exam/<int:exam_id>/export/<format>')
 @login_required
