@@ -164,6 +164,11 @@ def teacher_register():
 
     return render_template('teacher_register.html')
 
+@app.route('/teacher/documentation')
+@login_required
+def teacher_documentation():
+    return render_template('teacher_documentation.html')
+
 @app.route('/teacher/dashboard')
 @login_required
 def teacher_dashboard():

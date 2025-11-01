@@ -1,0 +1,43 @@
+{% extends "_layout.html" %}
+
+{% block title %}Teacher Documentation{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Teacher Documentation</h2>
+        </div>
+        <div class="card-body">
+            <h3>Welcome to the Teacher Dashboard!</h3>
+            <p>This guide will walk you through the key features and functionalities available to you.</p>
+            <hr>
+
+            <h4>Creating an Exam</h4>
+            <p>To create an exam, click on the "Create New Exam" button on your dashboard. You will need to provide the following information:</p>
+            <ul>
+                <li><strong>Title:</strong> The title of the exam.</li>
+                <li><strong>Class:</strong> The class for which the exam is intended.</li>
+                <li><strong>Duration:</strong> The duration of the exam in minutes.</li>
+                <li><strong>Description:</strong> Instructions or any other relevant information for the students.</li>
+            </ul>
+
+            <h4>Adding Questions</h4>
+            <p>After creating an exam, you can add questions in two ways:</p>
+            <ol>
+                <li><strong>Manually:</strong> Click on the "Add Question" button to add questions one by one. You can choose from different question types, such as multiple-choice, single-choice, and short answer.</li>
+                <li><strong>Bulk Upload:</strong> You can upload a batch of questions using an Excel or CSV file. The file should have the following columns: `question_text`, `question_type`, `option1`, `option2`, `option3`, `option4`, and `correct_answer`.</li>
+            </ol>
+
+            <h4>Managing Exams</h4>
+            <p>You can manage your exams from the dashboard. You can view the number of submissions, see the completion rate, and delete exams that are no longer needed.</p>
+
+            <h4>Viewing Analytics</h4>
+            <p>Click on the "Analytics" button to view detailed analytics for each exam. You can see the scores of each student, the average score, and the completion rate.</p>
+
+            <hr>
+            <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-primary">Return to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
