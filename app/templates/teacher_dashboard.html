@@ -596,7 +596,7 @@
                             <div class="actions">
                                 <a href="{{ url_for('manage_exam', exam_id=exam.id) }}">Manage</a>
                                 <a href="{{ url_for('teacher_analytics', exam_id=exam.id) }}">Analytics</a>
-                                <a href="{{ url_for('delete_exam', exam_id=exam.id) }}">
+                                <a href="{{ url_for('delete_exam', exam_id=exam.id) }}" class="delete-link">
                                     Delete
                                 </a>
                             </div>
@@ -647,7 +647,7 @@
 <script>
     // Add enhanced confirmation for delete actions
     document.addEventListener('DOMContentLoaded', function() {
-        const deleteLinks = document.querySelectorAll('.actions a:nth-child(3)');
+        const deleteLinks = document.querySelectorAll('.delete-link');
         
         deleteLinks.forEach(link => {
             link.addEventListener('click', function(e) {

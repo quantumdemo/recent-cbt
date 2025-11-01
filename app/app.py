@@ -27,6 +27,7 @@ from cachecontrol import CacheControl
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_secret_key')
 app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True) # Create upload folder if it doesn't exist
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30) # Session timeout
 
 # Mail configuration
